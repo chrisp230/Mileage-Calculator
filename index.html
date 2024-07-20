@@ -91,7 +91,7 @@
         }
 
         async function getDistance(home, destination) {
-            const apiKey = 'AIzaSyAs2ul-wbePeo3h7WJwjJJSmU5ZVGEmVKc'; // Replace with your actual API key
+            const apiKey = 'AIzaSyAs2ul-wbePeo3h7WJwjJJSmU5ZVGEmVKc'; // Your actual API key
             const url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${encodeURIComponent(home)}&destinations=${encodeURIComponent(destination)}&key=${apiKey}`;
 
             console.log(`Requesting distance from ${home} to ${destination}`);
@@ -101,6 +101,10 @@
                 const data = await response.json();
 
                 console.log('API Response:', data);
+
+                if (data.status !== 'OK') {
+                    throw new Error(`API error: ${data.error_message}`);
+                }
 
                 if (data.rows[0].elements[0].status === 'OK') {
                     const distanceText = data.rows[0].elements[0].distance.text;
