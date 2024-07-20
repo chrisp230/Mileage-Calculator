@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mileage Calculation</title>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: darkgray;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        #response {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+    <script>
+        function calculateDistance() {
+            const homeAddress = document.getElementById('homeAddress').value;
+            const destinationAddresses = document.getElementById('destinationAddresses').value.split('\n');
+            const deduction = parseFloat(document.getElementById('deduction').value);
+
+            let results = '';
+            let response = '';
+
+            destinationAddresses.forEach(destination => {
+                const distance = getDistance(homeAddress, destination);
+                const finalDistance = Math.round(distance - deduction); // Round to nearest whole number
+
+                results += `
+                    <p>
+                        Knocked turf at ${destination}:<br>
+                        Equation: ${distance.toFixed(2)} - ${deduction} = ${finalDistance}<br>
+                        Answer: ${finalDistance}<br>
+                        Address (A): ${homeAddress}<br>
+                        Address (A) to (B): ${homeAddress} to ${destination}
+                    </p>
+                `;
+
+                response += `Distance from ${homeAddress} to ${destination}: ${finalDistance} miles\n`;
+            });
+
+            document.getElementById('results').innerHTML = results;
+            document.getElementById('response').value = response.trim();
+        }
+
+        function getDistance(home, destination) {
+            return Math.random() * 100; // Replace with actual distance calculation logic
+        }
+    </script>
+</head>
+<body>
+    <h1>Mileage Calc</h1>
+    <div class="container">
+        <label for="homeAddress">Home Address:</label>
+        <input type="text" id="homeAddress">
+
+        <label for="destinationAddresses">Addresses traveled to:</label>
+        <textarea id="destinationAddresses" rows="5"></textarea>
+
+        <label for="deduction">Deduction:</label>
+        <input type="number" id="deduction" value="5.4">
+
+        <button onclick="calculateDistance()">Calculate</button>
+    </div>
+    <div id="results"></div>
+    <textarea id="response" rows="5" readonly></textarea>
+</body>
+</html>
