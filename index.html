@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mileage Calculation</title>
-     <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <style>
         body {
             background-color: white;
@@ -92,6 +92,13 @@
         function getDistance(home, destination) {
             return Math.random() * 100; // Replace with actual distance calculation logic
         }
+
+        function setLinkToSelf() {
+            document.getElementById('selfLink').href = window.location.href;
+            document.getElementById('selfLink').textContent = window.location.href;
+        }
+
+        window.onload = setLinkToSelf;
     </script>
 </head>
 <body>
@@ -110,5 +117,8 @@
     </div>
     <div id="results"></div>
     <textarea id="response" rows="5" readonly></textarea>
+    <div style="margin-top: 20px; text-align: center;">
+        <a id="selfLink" href="#">Link to this page</a>
+    </div>
 </body>
 </html>
