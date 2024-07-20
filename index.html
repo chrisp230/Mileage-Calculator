@@ -69,15 +69,15 @@
         }
     </style>
     <script>
-        function calculateDistance() {
+        async function calculateDistance() {
             const homeAddress = document.getElementById('homeAddress').value;
             const destinationAddresses = document.getElementById('destinationAddresses').value.split('\n');
             const deduction = parseFloat(document.getElementById('deduction').value);
 
             let response = '';
 
-            destinationAddresses.forEach(destination => {
-                const distance = getDistance(homeAddress, destination);
+            for (const destination of destinationAddresses) {
+                const distance = await getDistance(homeAddress, destination);
                 const finalDistance = Math.round(distance - deduction); // Round to nearest whole number
 
                 response += `Knocked turf at ${destination}:\n`;
@@ -85,14 +85,30 @@
                 response += `Answer: ${finalDistance}\n`;
                 response += `Address (A): ${homeAddress}\n`;
                 response += `Address (A) to (B): ${homeAddress} to ${destination}\n\n`;
-            });
+            }
 
             document.getElementById('response').value = response.trim();
         }
 
-        function getDistance(home, destination) {
-            // Placeholder distance calculation; replace with actual logic if needed
-            return Math.random() * 100;
+        async function getDistance(home, destination) {
+            const apiKey = 'AIzaSyAs2ul-wbePeo3h7WJwjJJSmU5ZVGEmVKc'; // Replace with your actual API key
+            const url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${encodeURIComponent(home)}&destinations=${encodeURIComponent(destination)}&key=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.rows[0].elements[0].status === 'OK') {
+                    const distanceText = data.rows[0].elements[0].distance.text;
+                    const distanceValue = parseFloat(distanceText.replace(/[^\d.-]/g, '')); // Extract numeric value from the text
+                    return distanceValue;
+                } else {
+                    throw new Error('Error calculating distance');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                return 0; // Return 0 if there's an error
+            }
         }
 
         function setLinkToSelf() {
