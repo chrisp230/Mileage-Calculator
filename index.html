@@ -57,7 +57,7 @@
             background-color: darkgray;
         }
         #results {
-            margin-top: 20px;
+            display: none; /* Hide the results div */
         }
         #response {
             margin-top: 10px;
@@ -74,27 +74,19 @@
             const destinationAddresses = document.getElementById('destinationAddresses').value.split('\n');
             const deduction = parseFloat(document.getElementById('deduction').value);
 
-            let results = '';
             let response = '';
 
             destinationAddresses.forEach(destination => {
                 const distance = getDistance(homeAddress, destination);
                 const finalDistance = Math.round(distance - deduction); // Round to nearest whole number
 
-                results += `
-                    <p>
-                        Knocked turf at ${destination}:<br>
-                        Equation: ${distance.toFixed(2)} - ${deduction} = ${finalDistance}<br>
-                        Answer: ${finalDistance}<br>
-                        Address (A): ${homeAddress}<br>
-                        Address (A) to (B): ${homeAddress} to ${destination}
-                    </p>
-                `;
-
-                response += `Distance from ${homeAddress} to ${destination}: ${finalDistance} miles\n`;
+                response += `Knocked turf at ${destination}:\n`;
+                response += `Equation: ${distance.toFixed(2)} - ${deduction} = ${finalDistance}\n`;
+                response += `Answer: ${finalDistance}\n`;
+                response += `Address (A): ${homeAddress}\n`;
+                response += `Address (A) to (B): ${homeAddress} to ${destination}\n\n`;
             });
 
-            document.getElementById('results').innerHTML = results;
             document.getElementById('response').value = response.trim();
         }
 
