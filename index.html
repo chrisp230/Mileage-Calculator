@@ -92,7 +92,7 @@
 
         async function getDistance(home, destination) {
             const apiKey = 'AIzaSyAs2ul-wbePeo3h7WJwjJJSmU5ZVGEmVKc'; // Your actual API key
-            const url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${encodeURIComponent(home)}&destinations=${encodeURIComponent(destination)}&key=${apiKey}`;
+            const url = `http://localhost:3000/distance?origins=${encodeURIComponent(home)}&destinations=${encodeURIComponent(destination)}&apiKey=${apiKey}`;
 
             console.log(`Requesting distance from ${home} to ${destination}`);
 
@@ -108,7 +108,9 @@
 
                 if (data.rows[0].elements[0].status === 'OK') {
                     const distanceText = data.rows[0].elements[0].distance.text;
+                    console.log(`Distance Text: ${distanceText}`);
                     const distanceValue = parseFloat(distanceText.replace(/[^\d.-]/g, '')); // Extract numeric value from the text
+                    console.log(`Distance Value: ${distanceValue}`);
                     return distanceValue;
                 } else {
                     throw new Error('Error calculating distance: ' + data.rows[0].elements[0].status);
